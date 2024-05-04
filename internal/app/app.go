@@ -1,9 +1,9 @@
 package app
 
 import (
-	"fmt"
+	"log"
 
-	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v2"
 )
 
 type App struct {
@@ -16,7 +16,7 @@ func Get(addr string) *App {
 		fiber.Config{},
 	)
 
-	res.Get("/", func(c fiber.Ctx) error {
+	res.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello World!")
 	})
 
@@ -27,10 +27,13 @@ func Get(addr string) *App {
 }
 
 func (app *App) Run() {
-	app.srvr.Listen(app.addr)
+	go func() {
+		err := app.srvr.Listen(app.addr)
+		log.Fatal(err)
+	}()
 }
 
 func (app *App) Shutdown() {
-	fmt.Println("Shutting down the server")
+	log.Println("Shutting down the server")
 	app.srvr.Shutdown()
 }
