@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v3"
 )
 
@@ -15,8 +17,7 @@ func Get(addr string) *App {
 	)
 
 	res.Get("/", func(c fiber.Ctx) error {
-		// TODO
-		return nil
+		return c.SendString("Hello World!")
 	})
 
 	return &App{
@@ -30,5 +31,6 @@ func (app *App) Run() {
 }
 
 func (app *App) Shutdown() {
+	fmt.Println("Shutting down the server")
 	app.srvr.Shutdown()
 }
