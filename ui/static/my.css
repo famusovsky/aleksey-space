@@ -40,8 +40,6 @@ header, footer {
     position: relative;
     background-size: cover;
     background-repeat: no-repeat;
-    min-height: 25vh;
-    max-height: 65vh;
     overflow: hidden; 
 }
 
