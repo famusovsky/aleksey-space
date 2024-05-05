@@ -2,28 +2,36 @@ package app
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	"github.com/gofiber/template/html/v2"
 )
 
 type App struct {
 	srvr *fiber.App
+	f    http.FileSystem
 	addr string
 }
 
-func Get(addr string) *App {
-	res := fiber.New(
-		fiber.Config{},
-	)
-
-	res.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello World!")
-	})
-
-	return &App{
-		srvr: res,
+func Get(addr string, f http.FileSystem) *App {
+	res := &App{
+		srvr: fiber.New(fiber.Config{
+			Views: html.NewFileSystem(f, ".html")}),
 		addr: addr,
+		f:    f,
 	}
+
+	res.srvr.Use("/static", filesystem.New(filesystem.Config{
+		Root:       f,
+		PathPrefix: "ui/static",
+		Browse:     true,
+	}))
+
+	res.setRoutes()
+
+	return res
 }
 
 func (app *App) Run() {
