@@ -78,9 +78,11 @@ a {
     text-decoration-line: underline;
 }
 
-a:hover {
-    font-style: italic;
-    text-decoration-line: none;
+@media (hover: hover) {
+    a:hover {
+        font-style: italic;
+        text-decoration-line: none;
+    }
 }
 
 ::selection {
