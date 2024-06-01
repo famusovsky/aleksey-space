@@ -1,18 +1,24 @@
 package app
 
 import (
+	"html/template"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/template/html/v2"
 )
 
+const code string = "amogus is kinda sus"
+
 type App struct {
 	srvr *fiber.App
 	f    http.FileSystem
 	addr string
+	text template.HTML
+	ch   cookieHandler
 }
 
 func Get(addr string, f http.FileSystem) *App {
@@ -20,8 +26,16 @@ func Get(addr string, f http.FileSystem) *App {
 		srvr: fiber.New(fiber.Config{
 			Views: html.NewFileSystem(f, ".html")}),
 		addr: addr,
+		ch:   getCookieHandler("user-info", "aleksey-space"),
 		f:    f,
 	}
+
+	txt, err := os.ReadFile("text")
+	if err != nil {
+		res.srvr.Shutdown()
+		panic(err)
+	}
+	res.text = template.HTML(txt)
 
 	res.srvr.Use("/static", filesystem.New(filesystem.Config{
 		Root:       f,
