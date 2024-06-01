@@ -18,8 +18,10 @@ var f embed.FS
 
 func main() {
 	addr := flag.String("addr", ":8080", "addr")
+	txt := flag.String("txt", "./text", "txt file")
+	pswd := flag.String("pswd", "./password", "pswd file")
 	flag.Parse()
-	application := app.Get(*addr, http.FS(f))
+	application := app.Get(*addr, *txt, *pswd, http.FS(f))
 
 	sigQuit := make(chan os.Signal, 2)
 	signal.Notify(sigQuit, syscall.SIGINT, syscall.SIGTERM)

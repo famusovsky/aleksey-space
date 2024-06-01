@@ -8,7 +8,7 @@ import (
 
 func (app *App) signIn(c *fiber.Ctx) error {
 	password := c.Query("pswd", "")
-	realPassword, _ := os.ReadFile("password.txt")
+	realPassword, _ := os.ReadFile(app.passwordFile)
 
 	if password != string(realPassword) {
 		return c.SendString(`password is wrong`)

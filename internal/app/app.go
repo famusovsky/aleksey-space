@@ -14,23 +14,27 @@ import (
 const code string = "amogus is kinda sus"
 
 type App struct {
-	srvr *fiber.App
-	f    http.FileSystem
-	addr string
-	text template.HTML
-	ch   cookieHandler
+	srvr         *fiber.App
+	f            http.FileSystem
+	addr         string
+	text         template.HTML
+	ch           cookieHandler
+	textFile     string
+	passwordFile string
 }
 
-func Get(addr string, f http.FileSystem) *App {
+func Get(addr, textFile, passwordFile string, f http.FileSystem) *App {
 	res := &App{
 		srvr: fiber.New(fiber.Config{
 			Views: html.NewFileSystem(f, ".html")}),
-		addr: addr,
-		ch:   getCookieHandler("user-info", "aleksey-space"),
-		f:    f,
+		addr:         addr,
+		ch:           getCookieHandler("user-info", "aleksey-space"),
+		f:            f,
+		textFile:     textFile,
+		passwordFile: passwordFile,
 	}
 
-	txt, err := os.ReadFile("text")
+	txt, err := os.ReadFile(textFile)
 	if err != nil {
 		res.srvr.Shutdown()
 		panic(err)

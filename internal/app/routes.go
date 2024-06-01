@@ -40,7 +40,7 @@ func (app *App) setRoutes() {
 	})
 	edit.Post("/", func(c *fiber.Ctx) error {
 		app.text = template.HTML(c.FormValue("text"))
-		os.WriteFile("text", []byte(app.text), 0644)
+		os.WriteFile(app.textFile, []byte(app.text), 0644)
 		return c.Redirect("/edit")
 	})
 }
