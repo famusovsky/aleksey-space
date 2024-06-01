@@ -1,5 +1,17 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <style>
+            * {
+            font-size: 1rem;
+            }
+            textarea {
+            box-sizing: border-box;
+            min-height: 60rem;
+            width: 100%;
+            }
+        </style>
+    </head>
     <form method="POST">
         <textarea name="text" required>{{.text}}</textarea>
         <br><br>
